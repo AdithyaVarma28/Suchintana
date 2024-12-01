@@ -20,19 +20,19 @@ Clone the repository to your local machine:
 git clone https://github.com/AdithyaVarma28/Suchintana
 cd frontend
 ```
-Step 2: Install Dependencies
+### Step 2: Install Dependencies
 
 Ensure you have Python 3.8+ installed. Use the following command to install the required libraries:
 ```bash
 pip install -r requirements.txt
 ```
 
-Step 4: Configure the Application
+### Step 4: Configure the Application
 
 Update the app.secret_key in app.py for enhanced security.
 Replace the api_key in the Hugging Face InferenceClient initialization with your personal Hugging Face API key.
 
-Step 5: Run the Application
+### Step 5: Run the Application
 
 Start the Flask application by running:
 ```bash
