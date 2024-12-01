@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot</title>
+    <style>        
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sauce:wght@400;600&family=CMU+Serif:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Open Sauce', 'CMU Serif', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(135deg, #fdf5f0, #fceff1);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 80px;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar:hover {
+            width: 250px;
+        }
+
+        .sidebar button {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 24px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+
+        .sidebar button:hover {
+            transform: scale(1.1);
+        }
+
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar:hover .sidebar-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-content button {
+            background: #fae2f7;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .sidebar-content button:hover {
+            transform: scale(1.05);
+            background: #ffc0e1;
+        }
+
+        .main {
+            margin-left: 80px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: calc(100% - 80px);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fae2f7;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            position: relative;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgb(248, 199, 255), rgb(252, 246, 243));
+            cursor: pointer;
+        }
+
+        .logo-options {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .logo-options button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logo-options button:hover {
+            background: #fae2f7;
+        }
+
+        .logo:hover .logo-options {
+            display: flex;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 10px;
+            margin: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 16px;
+            max-width: 60%;
+            word-wrap: break-word;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: #e1f7d5;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: #fae2f7;
+        }
+
+        .input-container {
+            display: flex;
+            padding: 15px 20px;
+            background: #fae2f7;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container input {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px 0 0 20px;
+            background: #ffffff;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .input-container button {
+            background: #fae2f7;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .input-container button:hover {
+            transform: scale(1.05);
+            background: #ffc0e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button id="sidebar-toggle">&#9776;</button>
+        <div class="sidebar-content">
+            <form action="{{ url_for('new_conversation') }}" method="POST">
+                <button type="submit" id="new-conversation-btn">New Conversation</button>
+            </form>
+        </div>
+    </div>
+    <div class="main">
+        <header class="chat-header">
+            <div>ChatBot</div>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo" class="logo">
+                <div class="logo-options">
+                    <button onclick="window.location.href='{{ url_for('profile') }}'">Profile</button>
+                    <button onclick="window.location.href='{{ url_for('change_password') }}'">Change Password</button>
+                    <button onclick="window.location.href='{{ url_for('logout') }}'">Log Out</button>
+                </div>
+            </div>
+        </header>
+        <div id="chat-box" class="chat-box">
+            {% for chat in chat_history %}
+                <div class="message user">{{ chat.user_input }}</div>
+                <div class="message bot">{{ chat.ai_response }}</div>
+            {% endfor %}
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', function() {
+            var userInput = document.getElementById('user-input').value;
+            if (!userInput) return;
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'user_input=' + encodeURIComponent(userInput)
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('chat-box').innerHTML += `
+                    <div class="message user">${userInput}</div>
+                `;
+                document.getElementById('user-input').value = ''; 
+                document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;  // Scroll to bottom
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, rgb(248, 199, 255), rgb(252, 246, 243));
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 350px;
+            padding: 30px;
+            background-color: rgba(240, 248, 255, 0.9);
+            border-radius: 10px;
+            color: #000080;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(173, 216, 230, 0.5);
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .brand-name {
+            font-size: 30px;
+            font-weight: bold;
+            color:rgb(201, 98, 214);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: rgb(248, 199, 255);
+        }
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #add8e6;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f0f8ff;
+        }
+        button {
+            background-color: #4682B4;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #5A9BD4;
+        }
+        input:focus,
+        button:focus {
+            outline: none;
+            border-color: #5A9BD4;
+        }
+        .error {
+            color: #B22222;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            color: #4682B4;
+            text-decoration: none;
+            margin-right: 10px;
+            padding: 5px;
+            font-size: 1.2em;
+        }
+        .navigation a:hover {
+            background-color: rgba(70, 130, 180, 0.2);
+            border-radius: 5px;
+        }
+        label {
+        display: block;
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #4682B4;
+        font-weight: bolder;
+        }
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo" class="logo">
+            <div class="brand-name">Suchintana</div>
+        </div>
+        <h2>Sign Up</h2>
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('signup') }}">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter your name" required>
+            
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" placeholder="Enter your email" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('signin') }}">Sign In</a></p>
+    </div>
+</body>
+</html>
