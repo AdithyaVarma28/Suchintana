@@ -50,5 +50,8 @@ The application will be accessible at **http://127.0.0.1:5000**.
 ### Future enhancements include:
 
 - Integration with external APIs.
+- Use a bigger model like **gpt2** and use the previous conversations or chats as the data to fine tune it.
+- Add the session history in the side bar which showcases many rows and each row represents a conversation and we can access,view and continue the conversation in it
+- Use facial emotion recognition as a weight factor for sentiment analysis.
 - Support for multiple languages to reach a broader audience.
 - Presently we are focusing on stress relief but in future we will focus on complete Mental Health.
